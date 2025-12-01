@@ -1,40 +1,19 @@
-name: Snowflake Deployment
+- name: Install SnowCLI
+  run: |
+    pip install snowflake-cli-labs
 
-on:
-  push:
-    branches: [ "main" ]
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v3
-
-    - name: Install SnowSQL
-      run: |
-        curl -O https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.25-linux_x86_64.pkg.sh
-        chmod +x snowsql-1.2.25-linux_x86_64.pkg.sh
-        ./snowsql-1.2.25-linux_x86_64.pkg.sh -i ~/.snowsql
-        ln -s ~/.snowsql/snowsql /usr/local/bin/snowsql
-        
-    - name: Configure SnowSQL
-      run: |
-        mkdir -p ~/.snowsql
-        cat <<EOF > ~/.snowsql/config
-        [connections.deploy]
-        accountname = ${{ secrets.SF_ACCOUNT }}
-        username = ${{ secrets.SF_USER }}
-        password = ${{ secrets.SF_PASSWORD }}
-        warehousename = COMPUTE_WH
-        dbname = RAJU_SNOWFLAKE_DB
-        schemaname = RAJU_SNOWFLAKE_SCHEMA
-        role = ACCOUNTADMIN
-        EOF
-
-    - name: Deploy SQL Files
-      run: |
-        for file in sql/*.sql; do
-          snowsql -c deploy -f "$file"
-        done
+- name: Run Deployments
+  run: |
+    snow sql -q "USE ROLE ACCOUNTADMIN;"
+    snow sql -f sql/stage_tables.sql
+    snow sql -f sql/metadata_tables.sql
+    snow sql -f sql/stored_procedures.sql
+    snow sql -f sql/orchestrator.sql
+  env:
+    SNOWFLAKE_ACCOUNT: ${{ secrets.SF_ACCOUNT }}
+    SNOWFLAKE_USERNAME: ${{ secrets.SF_USER }}
+    SNOWFLAKE_PASSWORD: ${{ secrets.SF_PASSWORD }}
+    SNOWFLAKE_ROLE: ACCOUNTADMIN
+    SNOWFLAKE_WAREHOUSE: COMPUTE_WH
+    SNOWFLAKE_DATABASE: RAJU_SNOWFLAKE_DB
+    SNOWFLAKE_SCHEMA: RAJU_SNOWFLAKE_SCHEMA
