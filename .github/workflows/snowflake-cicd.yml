@@ -14,8 +14,10 @@ jobs:
 
     - name: Install SnowSQL
       run: |
-        sudo apt-get update
-        sudo apt-get install -y snowsql
+        curl -o snowsql.pkg https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.21-linux_x86_64.pkg
+        mkdir -p ~/.snowsql
+        tar -xvf snowsql.pkg -C ~/.snowsql
+        ln -s ~/.snowsql/snowsql /usr/local/bin/snowsql
 
     - name: Configure SnowSQL
       run: |
