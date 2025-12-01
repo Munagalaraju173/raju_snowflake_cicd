@@ -14,11 +14,10 @@ jobs:
 
     - name: Install SnowSQL
       run: |
-        curl -o snowsql.pkg https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.21-linux_x86_64.pkg
-        mkdir -p ~/.snowsql
-        tar -xvf snowsql.pkg -C ~/.snowsql
+        curl -O https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.25-linux_x86_64.pkg.sh
+        chmod +x snowsql-1.2.25-linux_x86_64.pkg.sh
+        ./snowsql-1.2.25-linux_x86_64.pkg.sh -i ~/.snowsql
         ln -s ~/.snowsql/snowsql /usr/local/bin/snowsql
-
     - name: Configure SnowSQL
       run: |
         mkdir -p ~/.snowsql
