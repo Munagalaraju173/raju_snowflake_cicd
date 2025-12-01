@@ -26,8 +26,8 @@ jobs:
         username = ${{ secrets.SF_USER }}
         password = ${{ secrets.SF_PASSWORD }}
         warehousename = COMPUTE_WH
-        dbname = DEMO_DB
-        schemaname = PUBLIC
+        dbname = RAJU_SNOWFLAKE_DB
+        schemaname = RAJU_SNOWFLAKE_SCHEMA
         role = ACCOUNTADMIN
         EOF
 
