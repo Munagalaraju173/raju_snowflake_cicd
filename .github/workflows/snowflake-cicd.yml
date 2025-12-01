@@ -18,6 +18,7 @@ jobs:
         chmod +x snowsql-1.2.25-linux_x86_64.pkg.sh
         ./snowsql-1.2.25-linux_x86_64.pkg.sh -i ~/.snowsql
         ln -s ~/.snowsql/snowsql /usr/local/bin/snowsql
+        
     - name: Configure SnowSQL
       run: |
         mkdir -p ~/.snowsql
