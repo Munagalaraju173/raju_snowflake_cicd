@@ -8,6 +8,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    env:
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SF_ACCOUNT }}
+      SNOWFLAKE_USER: ${{ secrets.SF_USER }}
+      SNOWFLAKE_PASSWORD: ${{ secrets.SF_PASSWORD }}
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
@@ -18,10 +23,7 @@ jobs:
 
     - name: Test Snowflake Connection
       run: |
-        snow sql \
-          --account "${{ secrets.SF_ACCOUNT }}" \
-          --user "${{ secrets.SF_USER }}" \
-          --password "${{ secrets.SF_PASSWORD }}" \
+        snow sql -x \
           --role ACCOUNTADMIN \
           --warehouse COMPUTE_WH \
           --database RAJU_SNOWFLAKE_DB \
@@ -31,10 +33,7 @@ jobs:
     - name: Deploy SQL Files
       run: |
         for file in sql/*.sql; do
-          snow sql \
-            --account "${{ secrets.SF_ACCOUNT }}" \
-            --user "${{ secrets.SF_USER }}" \
-            --password "${{ secrets.SF_PASSWORD }}" \
+          snow sql -x \
             --role ACCOUNTADMIN \
             --warehouse COMPUTE_WH \
             --database RAJU_SNOWFLAKE_DB \
