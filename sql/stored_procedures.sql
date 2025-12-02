@@ -8,7 +8,8 @@ SELECT DISTINCT
     f.key,
     f.path,
     TYPEOF(f.value),
-    f.index
+    f.index,
+    CURRENT_TIMESTAMP()
 FROM LANDING_JSON,
 LATERAL FLATTEN(input => RAW[0]) f;
 --RETURN 'JSON METADATA LOADED';
