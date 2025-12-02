@@ -13,6 +13,6 @@ BEGIN
     CALL SP_LOAD_ORDERS();
     CALL SP_LOAD_ORDER_ITEMS();
     CALL SP_AUDIT(v_run_id);
-    RETURN 'PIPELINE COMPLETE | RUN_ID=' || v_run_id;
+    --RETURN 'PIPELINE COMPLETE | RUN_ID=' || v_run_id;
 END;
 $$;
