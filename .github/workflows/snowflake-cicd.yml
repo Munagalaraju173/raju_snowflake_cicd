@@ -18,7 +18,15 @@ jobs:
 
     - name: Test Snowflake Connection
       run: |
-        snowsql -a "${{secrets.SF_ACCOUNT}}" -u  "${{secrets.SF_USER}}"  -p  "${{secrets.SF_PASSWORD}}"  -r ACCOUNTADMIN -w COMPUTE_WH -d RAJU_SNOWFLAKE_DB -s RAJU_SNOWFLAKE_SCHEMA -q "SELECT CURRENT_USER(), CURRENT_ROLE();"
+        snow sql \
+          --account "${{ secrets.SF_ACCOUNT }}" \
+          --user "${{ secrets.SF_USER }}" \
+          --password "${{ secrets.SF_PASSWORD }}" \
+          --role ACCOUNTADMIN \
+          --warehouse COMPUTE_WH \
+          --database RAJU_SNOWFLAKE_DB \
+          --schema RAJU_SNOWFLAKE_SCHEMA \
+          -q "SELECT CURRENT_USER(), CURRENT_ROLE();"
 
     - name: Deploy SQL Files
       run: |
